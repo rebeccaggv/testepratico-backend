@@ -16,6 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, String>> handleBusinessException(IllegalArgumentException ex) {
         Map<String, String> error = new HashMap<>();
+        error.put("timestamp", String.valueOf(java.time.LocalDateTime.now()));
         error.put("error", "Regra de Negócio");
         error.put("message", ex.getMessage()); // pega a mensagem do service
         // retorna HTTP 409 p indicar o conflito, duplicidade de dados
@@ -26,6 +27,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
+        errors.put("timestamp", String.valueOf(java.time.LocalDateTime.now()));
+        errors.put("error", "Erro de Validação"); // título do erro
         // itera sobre todos os campos que falharam na validação p retornar uma lista limpa
         ex.getBindingResult().getFieldErrors().forEach(error ->
                 errors.put(error.getField(), error.getDefaultMessage())

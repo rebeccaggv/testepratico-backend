@@ -1,6 +1,7 @@
 package com.farmtech.testepratico_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,10 +23,13 @@ public class Product {
     @Column(unique = true) // valor único p não ter produtos com o mesmo nome
     private String name;
 
-    @Enumerated(EnumType.STRING) // salva no banco como texto
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "O status do produto é obrigatório") // salva no banco como texto, obrigatório
     private ProductStatus status;
 
     @Embedded // aqui entra a classe do Fazendeiro!
+    @NotNull(message = "Os dados do fazendeiro são obrigatórios") //obrigatório
+    @Valid //p funcionar as mensagens da classe Farmer
     private Farmer farmer;
 
     @CreationTimestamp // p preencher a data de criação sozinho
